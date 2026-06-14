@@ -10,7 +10,8 @@
     "db:push": "pnpm --filter database db:push",
     "db:seed": "pnpm --filter database db:seed",
     "db:migrate": "pnpm --filter database db:migrate",
-    "db:studio": "pnpm --filter database db:studio"
+    "db:studio": "pnpm --filter database db:studio",
+    "postinstall": "pnpm --filter database db:generate"
   },
   "devDependencies": {
     "next": "16.2.9",
