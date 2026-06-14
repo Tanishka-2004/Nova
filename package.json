@@ -1,0 +1,19 @@
+{
+  "name": "nova",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nova — AI Marketing Co-Pilot. Talk to your customers. Tell Nova to do the rest.",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "db:push": "pnpm --filter database db:push",
+    "db:seed": "pnpm --filter database db:seed",
+    "db:migrate": "pnpm --filter database db:migrate",
+    "db:studio": "pnpm --filter database db:studio"
+  },
+  "devDependencies": {
+    "turbo": "^2.9.0"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

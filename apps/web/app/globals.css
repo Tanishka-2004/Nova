@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+@layer base {
+  :root {
+    /* Xeno Light Mode (Blue Palette) */
+    --background: 210 50% 97%;    /* #f4f8fc */
+    --foreground: 221 39% 11%;    /* #111827 */
+    --card: 0 0% 100%;            /* #ffffff */
+    --card-hover: 210 50% 97%;   
+    --card-foreground: 221 39% 11%;
+    --popover: 0 0% 100%;         /* #ffffff */
+    --popover-foreground: 221 39% 11%;
+    --primary: 216 100% 50%;      /* #0066ff (Bright Blue) */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 100% 27%;    /* #002e8c (Deep Royal Blue) */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 214 100% 91%;        /* #dbeafe */
+    --muted-foreground: 215 16% 47%; /* #64748b */
+    --accent: 214 100% 91%;       /* #dbeafe */
+    --accent-foreground: 216 100% 50%;
+    --destructive: 0 84% 60%;     /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 100% 91%;       /* #dbeafe */
+    --input: 214 100% 91%;
+    --ring: 216 100% 50%;
+    --radius: 0.75rem;
+  }
+  .dark {
+    /* Executive Dark Mode */
+    --background: 229 63% 5%;    /* #050816 */
+    --foreground: 0 0% 100%;     /* #FFFFFF */
+    --card: 221 39% 11%;         /* #111827 */
+    --card-hover: 222 40% 15%;
+    --card-foreground: 0 0% 100%;
+    --popover: 225 49% 8%;       /* #0B1020 */
+    --popover-foreground: 0 0% 100%;
+    --primary: 262 83% 58%;      /* #7C3AED */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 271 91% 65%;    /* #A855F7 */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 225 49% 8%;         /* #0B1020 */
+    --muted-foreground: 214 32% 65%; /* #94A3B8 */
+    --accent: 221 39% 15%;       
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;    /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 221 39% 15%;       /* #172136 */
+    --input: 221 39% 15%;
+    --ring: 262 83% 58%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.3); /* indigo-500/30 */
+    color: white;
+  }
+}
+
+/* Linear / Vercel Utilities */
+@layer utilities {
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  
+  .glass-panel {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, white, #cbd5e1, #64748b);
+  }
+  
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+    z-index: -1;
+  }
+
+  .message-user {
+    background-color: #111111;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px -3px rgba(0, 0, 0, 0.5);
+  }
+
+  .message-assistant {
+    background-color: transparent;
+    color: #cbd5e1;
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

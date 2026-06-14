@@ -1,0 +1,213 @@
+// ──────────────────────────────────────────────────────────────
+// Nova – AI Marketing Co-Pilot  |  Prisma Schema
+// SQLite Local Database
+// ──────────────────────────────────────────────────────────────
+
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider   = "sqlite"
+}
+
+// ─── Enums ───────────────────────────────────────────────────
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum CustomerSource {
+  ORGANIC
+  REFERRAL
+  PAID_AD
+  SOCIAL_MEDIA
+}
+
+enum RfmTier {
+  CHAMPION
+  LOYAL
+  POTENTIAL
+  AT_RISK
+  LOST
+}
+
+enum OrderStatus {
+  PLACED
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderChannel {
+  WEBSITE
+  APP
+  STORE
+}
+
+enum MessageChannel {
+  WHATSAPP
+  SMS
+  EMAIL
+  RCS
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  COMPLETED
+}
+
+enum MessageStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  READ
+  CLICKED
+  FAILED
+}
+
+enum SegmentCreator {
+  AI
+  MANUAL
+}
+
+// ─── Models ──────────────────────────────────────────────────
+
+model Customer {
+  id               String         @id @default(uuid())
+  name             String
+  email            String         @unique
+  phone            String?
+  city             String
+  state            String
+  country          String         @default("India")
+  age              Int
+  gender           Gender
+  source           CustomerSource
+
+  // Denormalized aggregates (updated after order changes)
+  totalSpent       Float          @default(0)
+  orderCount       Int            @default(0)
+  lastOrderAt      DateTime?
+
+  // RFM scoring
+  rfmRecency       Float          @default(0)
+  rfmFrequency     Float          @default(0)
+  rfmMonetary      Float          @default(0)
+  rfmScore         Float          @default(0)
+  rfmTier          RfmTier        @default(POTENTIAL)
+
+  // Channel opt-ins
+  whatsappOptIn    Boolean        @default(true)
+  emailOptIn       Boolean        @default(true)
+  smsOptIn         Boolean        @default(true)
+
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  // Relations
+  orders           Order[]
+  segments         SegmentCustomer[]
+  campaignMessages CampaignMessage[]
+
+  @@map("customers")
+}
+
+model Order {
+  id          String       @id @default(uuid())
+  customerId  String
+  customer    Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  orderNumber String       @unique
+  amount      Float
+  items       Json         // Array of { name, qty, price }
+  status      OrderStatus  @default(DELIVERED)
+  channel     OrderChannel @default(WEBSITE)
+  createdAt   DateTime     @default(now())
+
+  @@index([customerId])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model Segment {
+  id            String           @id @default(uuid())
+  name          String
+  description   String
+  filters       Json
+  customerCount Int              @default(0)
+  createdBy     SegmentCreator   @default(AI)
+  createdAt     DateTime         @default(now())
+
+  // Relations
+  customers     SegmentCustomer[]
+  campaigns     Campaign[]
+
+  @@map("segments")
+}
+
+model SegmentCustomer {
+  segmentId  String
+  customerId String
+  segment    Segment  @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@id([segmentId, customerId])
+  @@map("segment_customers")
+}
+
+model Campaign {
+  id              String         @id @default(uuid())
+  name            String
+  segmentId       String
+  segment         Segment        @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+  channel         MessageChannel
+  messageTemplate String
+  status          CampaignStatus @default(DRAFT)
+  scheduledAt     DateTime?
+  launchedAt      DateTime?
+  completedAt     DateTime?
+  stats           String         @default("{\"sent\":0,\"delivered\":0,\"read\":0,\"clicked\":0,\"failed\":0}")
+  aiRationale     String?
+  createdAt       DateTime       @default(now())
+
+  // Relations
+  messages        CampaignMessage[]
+
+  @@index([segmentId])
+  @@index([status])
+  @@map("campaigns")
+}
+
+model CampaignMessage {
+  id               String        @id @default(uuid())
+  campaignId       String
+  campaign         Campaign      @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  customerId       String
+  customer         Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  channel          MessageChannel
+  recipientAddress String
+  content          String
+  status           MessageStatus @default(QUEUED)
+  sentAt           DateTime?
+  deliveredAt      DateTime?
+  readAt           DateTime?
+  clickedAt        DateTime?
+  failedAt         DateTime?
+  failureReason    String?
+  externalId       String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([campaignId])
+  @@index([customerId])
+  @@index([status])
+  @@map("campaign_messages")
+}
