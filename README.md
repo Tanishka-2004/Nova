@@ -236,7 +236,7 @@ over:
 
 # Production Audit Results
 
-Audited 2026-06-15 against live deployments ([Full Audit Report](https://github.com/Tanishka-2004/Nova/blob/main/black_box_audit_scorecard.md)):
+Audited 2026-06-15 against live deployments:
 
 | Category | Score |
 |----------|-------|
