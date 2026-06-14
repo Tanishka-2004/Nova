@@ -309,6 +309,6 @@ nova/
 ---
 
 <div align="center">
-Built for the <strong>Xeno AI Marketing Co-Pilot Challenge</strong><br/>
+Built for the <strong>Xeno Engineering Take-Home Assignmente</strong><br/>
 <a href="https://nova-nine-tau.vercel.app">nova-nine-tau.vercel.app</a>
 </div>
