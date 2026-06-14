@@ -90,8 +90,18 @@ export async function POST(req: Request) {
     }
 
     // 5. Call FastAPI Channel Service
-    const channelServiceUrl = process.env.CHANNEL_SERVICE_URL || "http://localhost:8001";
-    const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/webhooks/delivery`;
+    const channelServiceUrl = process.env.CHANNEL_SERVICE_URL;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+    if (!channelServiceUrl || !appUrl) {
+      console.error("CHANNEL_SERVICE_URL or NEXT_PUBLIC_APP_URL is not configured.");
+      return NextResponse.json(
+        { error: "Channel service misconfigured. Missing required environment variables." },
+        { status: 500 }
+      );
+    }
+
+    const callbackUrl = `${appUrl}/api/webhooks/delivery`;
 
     try {
       const response = await fetch(`${channelServiceUrl}/send`, {

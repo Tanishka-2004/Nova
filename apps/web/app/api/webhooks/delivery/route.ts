@@ -85,7 +85,8 @@ export async function POST(req: Request) {
         where: { id: updatedMsg.campaignId },
         data: {
           stats: JSON.stringify(statsObj),
-          status: isCompleted ? "COMPLETED" : "SENDING"
+          status: isCompleted ? "COMPLETED" : "SENDING",
+          ...(isCompleted ? { completedAt: new Date() } : {}),
         }
       });
     }
