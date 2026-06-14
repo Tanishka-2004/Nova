@@ -55,14 +55,14 @@ async function generateDormantLoyalists() {
   });
   const now = new Date();
   const daysInactive = cohortCustomers
-    .filter((c) => c.lastOrderAt)
-    .map((c) => Math.floor((now.getTime() - new Date(c.lastOrderAt!).getTime()) / (1000 * 60 * 60 * 24)));
+    .filter((c: any) => c.lastOrderAt)
+    .map((c: any) => Math.floor((now.getTime() - new Date(c.lastOrderAt!).getTime()) / (1000 * 60 * 60 * 24)));
   const avgDaysInactive = daysInactive.length > 0
-    ? Math.round(daysInactive.reduce((a, b) => a + b, 0) / daysInactive.length)
+    ? Math.round(daysInactive.reduce((a: number, b: number) => a + b, 0) / daysInactive.length)
     : 0;
 
   // Data confidence: % of cohort with both phone AND email (reachability)
-  const reachableCount = cohortCustomers.filter((c) => c.phone && c.email).length;
+  const reachableCount = cohortCustomers.filter((c: any) => c.phone && c.email).length;
   const dataConfidence = audienceSize > 0 ? Math.round((reachableCount / audienceSize) * 100) : 0;
 
   // Deterministic revenue calculation
