@@ -47,3 +47,5 @@ npm-debug.log*
 pnpm-debug.log*
 *.db
 *.db-journal
+
+.vercel

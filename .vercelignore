@@ -1,0 +1,16 @@
+node_modules
+.venv
+.next
+.turbo
+apps/web/.next
+apps/web/node_modules
+packages/database/node_modules
+apps/channel-service/.venv
+apps/channel-service/__pycache__
+.git
+*.db
+*.db-journal
+packages/database/prisma/dev.db
+C:/Users/tmmud/.gemini/antigravity/scratch/nova/node_modules
+C:/Users/tmmud/.gemini/antigravity/scratch/nova/apps/web/node_modules
+C:/Users/tmmud/.gemini/antigravity/scratch/nova/packages/database/node_modules
