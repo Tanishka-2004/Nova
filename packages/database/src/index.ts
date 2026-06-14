@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 
-const dbUrl = process.env.DATABASE_URL || 'file:C:/Users/tmmud/.gemini/antigravity/scratch/nova/packages/database/prisma/dev.db'
-const adapter = new PrismaBetterSqlite3({ url: dbUrl })
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/neondb'
+const pool = new Pool({ connectionString })
+const adapter = new PrismaPg(pool)
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
