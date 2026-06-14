@@ -263,7 +263,7 @@ export function AgentChat() {
 
             <div className="mt-8 mb-4 w-full flex flex-col items-center">
               <button
-                onClick={() => handleSuggestionClick("Bring back high-value customers who have not purchased in 60 days.")}
+                onClick={() => handleSuggestionClick("Generate a win-back campaign for our Dormant Loyalists cohort.")}
                 className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full bg-white px-8 font-bold text-secondary transition-all duration-300 hover:scale-105 shadow-[0_0_20px_-5px_rgba(255,255,255,0.4)]"
               >
                 <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
