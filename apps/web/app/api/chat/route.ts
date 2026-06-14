@@ -293,6 +293,25 @@ export async function POST(req: Request) {
 
       let strategyData: any = null;
 
+      const chatHistory = messages?.map((m: any) => {
+        if (m.role === "user") return `User: ${m.content}`;
+        if (m.role === "assistant" && m.toolInvocations?.length > 0) {
+          const result = m.toolInvocations[0].result;
+          if (result) {
+            return `Assistant (Previous Strategy): ${JSON.stringify({
+              personaName: result.personaName,
+              personaCharacteristics: result.personaCharacteristics,
+              personaStrategy: result.personaStrategy,
+              recommendedChannel: result.recommendedChannel,
+              channelReasoning: result.channelReasoning,
+              campaignVariantA: result.campaignVariantA,
+              campaignVariantB: result.campaignVariantB
+            })}`;
+          }
+        }
+        return "";
+      }).filter(Boolean).join("\n\n") || "";
+
       // ── Build data-aware system prompt ──
       const dataContextPrompt = `
 REAL BUSINESS DATA (from database — do NOT override these numbers):
@@ -314,6 +333,9 @@ CRITICAL RULES:
 3. estimatedRevenue must be calculated as: audienceSize × CTR × conversionRate × AOV. Show the formula.
 4. You generate: persona, strategy, copy, channel reasoning, critic assessment.
 5. You do NOT generate: audience size, AOV, customer counts, revenue — those come from the database.
+
+CHAT HISTORY:
+${chatHistory}
 `;
 
       // Try Gemini first if key is present
@@ -331,7 +353,10 @@ CRITICAL RULES:
                   role: "user",
                   parts: [
                     {
-                      text: `You are Nova, an elite AI Marketing Strategist. The user gives a business goal. Respond ONLY with a valid JSON object matching the requested schema. Do not wrap in markdown or backticks (e.g. do not write \`\`\`json).
+                      text: `You are Nova, an elite AI Marketing Strategist. 
+If the user is asking for a new campaign, generate a new one based on the goal.
+If the user is asking to edit, challenge, or modify the previous campaign, take the "Assistant (Previous Strategy)" from the CHAT HISTORY and modify it according to the LATEST USER REQUEST.
+Respond ONLY with a valid JSON object matching the requested schema. Do not wrap in markdown or backticks (e.g. do not write \`\`\`json).
 
 ${dataContextPrompt}
 
@@ -358,7 +383,7 @@ Requested JSON schema:
   "roi": string (MUST be a short multiplier string, e.g. "8.5x" or "12x")
 }
 
-Goal: "${userGoal}"`
+LATEST USER REQUEST: "${userGoal}"`
                     }
                   ]
                 }
@@ -399,12 +424,13 @@ Goal: "${userGoal}"`
                 {
                   role: "system",
                   content: `You are Nova, an elite AI Marketing Strategist. Respond ONLY with valid JSON.
+If the user asks to edit/challenge the strategy, use the CHAT HISTORY to update the previous strategy.
 
 ${dataContextPrompt}
 
 Use the exact schema provided. Use {{first_name}} in campaign copy.`,
                 },
-                { role: "user", content: `Goal: "${userGoal}"` },
+                { role: "user", content: `LATEST USER REQUEST: "${userGoal}"` },
               ],
             }),
           });
