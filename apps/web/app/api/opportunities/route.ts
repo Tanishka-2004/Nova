@@ -151,7 +151,7 @@ async function generateChurnRiskVIPs() {
     where: { rfmTier: { in: ["CHAMPION", "LOYAL"] } },
     select: { phone: true, email: true },
   });
-  const reachableVips = vipCustomers.filter((c) => c.phone && c.email).length;
+  const reachableVips = vipCustomers.filter((c: any) => c.phone && c.email).length;
   const dataConfidence = vipCustomers.length > 0
     ? Math.round((reachableVips / vipCustomers.length) * 100) : 0;
 
@@ -225,7 +225,7 @@ async function generateCrossSellOpportunity() {
     where: { rfmTier: "POTENTIAL", orderCount: { gte: 1 } },
     select: { phone: true, email: true },
   });
-  const reachable = potentialCustomers.filter((c) => c.phone && c.email).length;
+  const reachable = potentialCustomers.filter((c: any) => c.phone && c.email).length;
   const dataConfidence = potentialCustomers.length > 0
     ? Math.round((reachable / potentialCustomers.length) * 100) : 0;
 
@@ -289,7 +289,7 @@ async function getGlobalStats() {
     totalOrders,
     totalRevenue: Math.round((revenueResult._sum.amount ?? 0) * 100) / 100,
     avgOrderValue: Math.round((revenueResult._avg.amount ?? 0) * 100) / 100,
-    tierDistribution: tierDistribution.map((t) => ({
+    tierDistribution: tierDistribution.map((t: any) => ({
       tier: t.rfmTier,
       count: t._count.id,
       percentage: Math.round((t._count.id / totalCustomers) * 1000) / 10,
@@ -312,7 +312,7 @@ export async function GET() {
     const opportunities = [dormant, churnVip, crossSell];
 
     // Total opportunity = sum of all individual revenues (deterministic)
-    const totalOpportunity = opportunities.reduce((sum, opp) => sum + opp.revenue, 0);
+    const totalOpportunity = opportunities.reduce((sum: number, opp: any) => sum + opp.revenue, 0);
 
     return NextResponse.json({
       totalOpportunity,
