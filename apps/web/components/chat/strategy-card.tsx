@@ -327,7 +327,7 @@ export function StrategyProposalCard({ result }: { result: any }) {
           <button 
             onClick={() => {
               window.dispatchEvent(new CustomEvent("nova-chat", {
-                detail: `Challenge the strategy proposal for "${result.goal || 'grow revenue'}". Give me an alternative channel, segment, or copywriting approach.`
+                detail: `Challenge the strategy proposal for "${result.goal || 'grow revenue'}". Give me an alternative approach.`
               }));
             }}
             className="text-[10px] font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-1"
@@ -338,7 +338,7 @@ export function StrategyProposalCard({ result }: { result: any }) {
             <button 
               onClick={() => {
                 window.dispatchEvent(new CustomEvent("nova-chat", {
-                  detail: `I want to edit this campaign proposal. Let's customize the copy or the target segment filter.`
+                  detail: `I want to edit this campaign proposal. Let's customize the copy.`
                 }));
               }}
               className="px-3 py-1.5 rounded-full border border-white/10 text-white text-xs font-medium hover:bg-white/5 transition-all"
