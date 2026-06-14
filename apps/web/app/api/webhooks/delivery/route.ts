@@ -77,7 +77,7 @@ export async function POST(req: Request) {
       }
 
       // If all messages have reached a terminal or semi-terminal state, mark campaign COMPLETED
-      const totalMessages = statsResult.reduce((sum, row) => sum + row._count.id, 0);
+      const totalMessages = statsResult.reduce((sum: number, row: any) => sum + row._count.id, 0);
       const processedCount = statsObj.delivered + statsObj.read + statsObj.clicked + statsObj.failed + statsObj.sent;
       const isCompleted = processedCount >= totalMessages && statsObj.sent === 0;
 
