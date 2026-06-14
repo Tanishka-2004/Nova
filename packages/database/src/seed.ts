@@ -155,7 +155,8 @@ async function updateCustomerAggregates() {
             lastOrderAt: agg._max.createdAt,
           },
         })
-      )
+      ),
+      { timeout: 30000 }
     )
   }
 
@@ -206,6 +207,7 @@ async function updateRfmScores() {
           },
         }),
       ),
+      { timeout: 30000 }
     )
   }
 

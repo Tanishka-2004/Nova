@@ -167,7 +167,7 @@ export default function CommandCenterPage() {
                   </h3>
                   
                   <div className="flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
-                    <Node icon={Database} label="Customer Data" sub="SQLite + Prisma" />
+                    <Node icon={Database} label="Customer Data" sub="PostgreSQL + Prisma" />
                     <Connection />
                     <Node icon={Zap} label="Opportunity Engine" sub="Real-Time Queries" glow="amber" />
                     <Connection />
@@ -394,7 +394,7 @@ export default function CommandCenterPage() {
                           </div>
                         </div>
 
-                        <p className="text-sm text-muted-foreground mb-8 line-clamp-2">{opp.whyExists}</p>
+                        <p className="text-sm text-muted-foreground mb-8">{opp.whyExists}</p>
 
                         <div className="flex items-center justify-between pt-6 border-t border-border">
                           <button 

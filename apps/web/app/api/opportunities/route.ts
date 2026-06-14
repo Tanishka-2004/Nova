@@ -320,7 +320,7 @@ export async function GET() {
       globalStats,
       metadata: {
         generatedAt: new Date().toISOString(),
-        dataSource: "SQLite via Prisma ORM",
+        dataSource: "PostgreSQL via Prisma ORM",
         hardcodedValues: "NONE — all business metrics derived from database queries",
         assumptionSource: "Conversion rate benchmarks (documented per-opportunity)",
       },
